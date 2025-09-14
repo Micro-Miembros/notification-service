@@ -1,4 +1,4 @@
-package co.analisys.biblioteca.config; 
+package co.analisys.gimnasio.config; 
  
 import org.springframework.context.annotation.Bean; 
 import org.springframework.context.annotation.Configuration; 
