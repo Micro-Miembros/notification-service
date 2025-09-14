@@ -1,0 +1,401 @@
+{
+	"info": {
+		"_postman_id": "54765de5-5065-4f3d-8de7-a5ddd8ffa0fc",
+		"name": "BibliotecaTests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34538616"
+	},
+	"item": [
+		{
+			"name": "Get token user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();\r",
+							"\r",
+							"pm.collectionVariables.set(\"userToken\", response.access_token);\r",
+							"pm.expect(pm.response.code).to.eql(200);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": " application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "circulacion-service",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "tUkmSphRf9kgZtYMa4YE8lzw3BTHOYnk",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "user1",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "user1",
+							"type": "text"
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/realms/biblioteca/protocol/openid-connect/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"realms",
+						"biblioteca",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get prestamos as user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.expect(pm.response.code).to.eql(200);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{userToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8083/circulacion/prestamos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"circulacion",
+						"prestamos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Prestar as user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.expect(pm.response.code).to.eql(403);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{userToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8083/circulacion/prestar?usuarioId=1&libroId=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"circulacion",
+						"prestar"
+					],
+					"query": [
+						{
+							"key": "usuarioId",
+							"value": "1"
+						},
+						{
+							"key": "libroId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get token librarian",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"let response = pm.response.json();\r",
+							"\r",
+							"pm.collectionVariables.set(\"biblioToken\", response.access_token);\r",
+							"pm.expect(pm.response.code).to.eql(200);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": " application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "circulacion-service",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "tUkmSphRf9kgZtYMa4YE8lzw3BTHOYnk",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "librarian1",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "librarian1",
+							"type": "text"
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/realms/biblioteca/protocol/openid-connect/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"realms",
+						"biblioteca",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get prestamos as librarian",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.expect(pm.response.code).to.eql(200);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{biblioToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8083/circulacion/prestamos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"circulacion",
+						"prestamos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Prestar as librarian",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.expect(pm.response.code).to.eql(200);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{biblioToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8083/circulacion/prestar?usuarioId=1&libroId=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"circulacion",
+						"prestar"
+					],
+					"query": [
+						{
+							"key": "usuarioId",
+							"value": "1"
+						},
+						{
+							"key": "libroId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "biblioToken",
+			"value": "0",
+			"type": "string",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			}
+		},
+		{
+			"key": "userToken",
+			"value": "0",
+			"type": "string",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			}
+		}
+	]
+}
